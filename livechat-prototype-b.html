@@ -848,7 +848,7 @@ body{
   display:none;
   padding:8px 0 max(8px, env(safe-area-inset-bottom));
 }
-.chat-feed-outer.expanded .chat-sheet-input{display:block}
+.chat-feed-outer.expanded .chat-sheet-input{display:block;margin-top:auto;flex-shrink:0}
 
 /* 일반채팅 확장 상태 — 바텀시트 스타일 */
 .chat-feed-outer.expanded{
@@ -860,11 +860,16 @@ body{
   margin-left:-16px;margin-right:-16px;
   box-shadow:0 -4px 30px rgba(0,0,0,0.6);
   border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;flex-direction:column;
+}
+.chat-feed-outer.expanded .chat-feed-wrap{
+  flex:1;overflow-y:auto;
 }
 .chat-feed-outer.expanded .chat-feed-wrap{
   pointer-events:auto;
   -webkit-mask-image:none;
   mask-image:none;
+  flex:1;min-height:0;
 }
 .chat-feed-outer.expanded .chat-msg{background:none;padding:4px 0}
 .chat-feed-outer.expanded .chat-msg.type-donate{
