@@ -259,7 +259,10 @@ body{
   -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 20px);
   mask-image:linear-gradient(to bottom, transparent 0%, black 20px);
 }
-.chat-feed-outer.compact{max-height:70px}
+.chat-feed-outer.compact{max-height:70px;overflow:visible}
+.chat-feed-outer.compact .chat-sheet-handle{display:none}
+.chat-feed-outer.compact .chat-rank-bar{display:none}
+.chat-feed-outer.compact .chat-sheet-input{display:block;pointer-events:auto}
 .chat-feed-wrap{
   position:relative;overflow:hidden;pointer-events:none;
   max-height:inherit;
@@ -1991,7 +1994,8 @@ function updateChatRankBar() {
   const bar = document.getElementById('chatRankBar');
   if (!bar) return;
   const top = getTopRankers();
-  if (top.length === 0) { bar.innerHTML = ''; return; }
+  if (top.length === 0) { bar.innerHTML = ''; bar.style.display = 'none'; return; }
+  bar.style.display = '';
   bar.innerHTML = top.map((t, i) =>
     '<span class="rank-entry"><img class="rank-bar-icon" src="' + RANK_ICONS[i] + '" alt="">' +
     '<span class="rank-name">' + t.name + '</span>' +
