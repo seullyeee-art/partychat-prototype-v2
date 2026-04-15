@@ -829,25 +829,40 @@ body{
 .chat-rank-bar .rank-name{font-weight:600;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--label-strong)}
 .chat-rank-bar .rank-amount{color:var(--label-strong);font-weight:600}
 
-/* 채팅창 접기 버튼 (확장 시만 표시) */
+/* 채팅창 접기 버튼 — 바텀시트 핸들 */
 .chat-collapse-btn{
-  display:none;position:absolute;top:4px;right:4px;z-index:10;
-  width:28px;height:28px;border-radius:50%;
-  background:rgba(0,0,0,0.4);border:none;
-  color:var(--label-neutral);cursor:pointer;
-  align-items:center;justify-content:center;
+  display:none;
+  width:40px;height:4px;border-radius:2px;
+  background:var(--fill-normal);
+  border:none;cursor:pointer;
+  margin:0 auto 12px;padding:0;
   transition:all 0.2s;
 }
-.chat-collapse-btn:hover{background:rgba(0,0,0,0.6);color:var(--label-strong)}
-.chat-feed-outer.expanded .chat-collapse-btn{display:flex}
+.chat-feed-outer.expanded .chat-collapse-btn{display:block}
 
-/* 일반채팅 확장 상태 */
+/* 일반채팅 확장 상태 — 바텀시트 스타일 */
 .chat-feed-outer.expanded{
-  max-height:40vh;
+  position:fixed;
+  left:0;right:0;bottom:0;
+  max-width:430px;margin:0 auto;
+  max-height:55vh;
+  z-index:200;
   pointer-events:auto;
+  background:linear-gradient(180deg, rgba(18,18,24,0.97) 0%, rgba(10,10,14,0.99) 100%);
+  border-radius:20px 20px 0 0;
+  padding:12px 16px 0;
+  box-shadow:0 -4px 30px rgba(0,0,0,0.6);
+  border-top:1px solid rgba(255,255,255,0.06);
+  transform:translateY(0);
+  transition:transform 0.4s cubic-bezier(.16,1,.3,1), max-height 0.4s ease;
 }
 .chat-feed-outer.expanded .chat-feed-wrap{
   pointer-events:auto;
+  -webkit-mask-image:none;
+  mask-image:none;
+}
+.chat-feed-outer.expanded .chat-feed{
+  padding-bottom:max(16px, env(safe-area-inset-bottom));
 }
 
 /* ═══ DONATE TRIGGER BUTTON (Chzzk style) ═══ */
