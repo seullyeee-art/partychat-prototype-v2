@@ -289,10 +289,10 @@ body{
 }
 .chat-msg.fade-out{opacity:0;transform:translateY(-10px)}
 .chat-msg .msg-avatar{display:none}
-.chat-msg .msg-user{font-weight:600;margin-right:4px;max-width:80px;overflow:hidden;display:inline-block;white-space:nowrap;text-overflow:ellipsis;vertical-align:bottom}
+.chat-msg .msg-user{font-weight:600;margin-right:4px;max-width:80px;overflow:hidden;display:inline-block;white-space:nowrap;text-overflow:ellipsis;vertical-align:middle}
 .chat-msg .msg-user.overflow{text-overflow:clip;animation:nickScroll 3s linear infinite}
 @keyframes nickScroll{0%,10%{transform:translateX(0)}90%,100%{transform:translateX(calc(-100% + 80px))}}
-.chat-msg .msg-text{font-weight:400;word-break:break-word}
+.chat-msg .msg-text{font-weight:400;word-break:break-word;vertical-align:middle}
 .mir-heart{width:14px;height:14px;margin-right:2px;vertical-align:middle;object-fit:contain}
 .chat-msg .msg-me{
   display:inline-block;padding:1px 5px;border-radius:4px;
@@ -344,7 +344,7 @@ body{
 /* 메시지 뱃지 */
 .msg-badge{
   display:inline-block;padding:1px 5px;border-radius:4px;
-  font-size:9px;font-weight:700;margin-right:4px;flex-shrink:0;
+  font-size:9px;font-weight:700;margin-right:4px;vertical-align:middle;
 }
 .msg-badge.badge-donate{
   background:rgba(232,200,122,0.15);color:var(--accent-gold);
