@@ -863,13 +863,17 @@ body{
   display:flex;flex-direction:column;
 }
 .chat-feed-outer.expanded .chat-feed-wrap{
-  flex:1;overflow-y:auto;
-}
-.chat-feed-outer.expanded .chat-feed-wrap{
+  flex:1;min-height:0;
+  max-height:none;
+  overflow-y:auto;
   pointer-events:auto;
   -webkit-mask-image:none;
   mask-image:none;
-  flex:1;min-height:0;
+  display:flex;flex-direction:column;
+}
+.chat-feed-outer.expanded .chat-feed{
+  justify-content:flex-end;
+  min-height:100%;
 }
 .chat-feed-outer.expanded .chat-msg{background:none;padding:4px 0}
 .chat-feed-outer.expanded .chat-msg.type-donate{
