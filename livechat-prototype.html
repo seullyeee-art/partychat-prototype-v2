@@ -624,6 +624,7 @@ body{
 /* ═══ DIALOGUE MODE (visual novel style — fixed position, replace per turn) ═══ */
 .dlg-area{
   padding:0 4px;
+  padding-top:max(56px, calc(env(safe-area-inset-top) + 48px));
   min-height:260px;
   display:flex;flex-direction:column;justify-content:flex-end;
 }
@@ -821,6 +822,7 @@ body{
   pointer-events:auto;
 }
 .chat-feed-outer.expanded .chat-rank-bar{display:flex;cursor:pointer}
+
 .chat-rank-bar .rank-entry{display:flex;align-items:center;gap:3px;white-space:nowrap}
 .chat-rank-bar .rank-bar-icon{width:18px;height:18px;object-fit:contain}
 .chat-rank-bar .rank-name{font-weight:600;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--label-strong)}
@@ -840,7 +842,7 @@ body{
 
 /* 일반채팅 확장 상태 */
 .chat-feed-outer.expanded{
-  max-height:50vh;
+  max-height:40vh;
   pointer-events:auto;
 }
 .chat-feed-outer.expanded .chat-feed-wrap{
@@ -1446,26 +1448,24 @@ input[type=number]{-moz-appearance:textfield}
   <!-- Guide Popup -->
   <div class="guide-overlay" id="guideOverlay">
     <div class="guide-card">
-      <div class="guide-title">라이브챗 모드 안내</div>
+      <div class="guide-title">라이브챗 참여 안내</div>
       <div class="guide-modes">
         <div class="guide-mode-item">
           <div class="guide-mode-top">
-            <div class="guide-mode-name">💬 채팅하기</div>
-            <div class="guide-mode-desc">시청자들과 자유롭게 대화해요</div>
-          </div>
-          <div class="guide-sub">
-            <div class="guide-sub-icon"><img src="./images/icon/gift.svg" width="14" height="14"></div>
-            <div class="guide-sub-text">특별한 후원메세지를 전송할 수 있어요</div>
+            <div class="guide-mode-name">✨ 캐릭터에게 말 걸기</div>
+            <div class="guide-mode-desc">하단 인풋으로 캐릭터에게 메세지를 보내세요<br>💎 10미르가 소모되며, 턴마다 한 명이 선택돼요</div>
           </div>
         </div>
         <div class="guide-mode-item">
           <div class="guide-mode-top">
-            <div class="guide-mode-name">✨ 캐릭터 에게</div>
-            <div class="guide-mode-desc">캐릭터에게 직접 말을 걸어요<br>턴마다 한 명의 메시지가 선택돼요</div>
+            <div class="guide-mode-name">💬 일반 채팅</div>
+            <div class="guide-mode-desc">말풍선 아이콘을 눌러 시청자들과 자유롭게 대화해요</div>
           </div>
-          <div class="guide-sub">
-            <div class="guide-sub-icon">🚀</div>
-            <div class="guide-sub-text">부스트로 선택 확률을 높일 수 있어요</div>
+        </div>
+        <div class="guide-mode-item">
+          <div class="guide-mode-top">
+            <div class="guide-mode-name">🎁 후원하기</div>
+            <div class="guide-mode-desc">인풋 오른쪽 선물 아이콘으로 미르를 후원할 수 있어요</div>
           </div>
         </div>
       </div>
@@ -2142,7 +2142,7 @@ function generateDummyMessage() {
 
 function startDummyChat() {
   function scheduleNext() {
-    const delay = rand(600, 1800);
+    const delay = rand(2000, 4000);
     dummyChatTimer = setTimeout(() => {
       generateDummyMessage();
       scheduleNext();
@@ -2204,6 +2204,8 @@ function openGeneralChat() {
   // 아이콘 전환: 말풍선 → X
   toggleBtn.querySelector('.icon-chat').style.display = 'none';
   toggleBtn.querySelector('.icon-close').style.display = '';
+  // 캐릭터 이름 숨김
+  document.getElementById('dlgNameRow').style.display = 'none';
   setInputMode('free');
   // 스크롤을 맨 아래로
   const wrap = document.getElementById('chatFeedWrap');
@@ -2219,6 +2221,8 @@ function closeGeneralChat() {
   // 아이콘 전환: X → 말풍선
   toggleBtn.querySelector('.icon-chat').style.display = '';
   toggleBtn.querySelector('.icon-close').style.display = 'none';
+  // 캐릭터 이름 복원
+  document.getElementById('dlgNameRow').style.display = '';
   setInputMode('ai');
 }
 
