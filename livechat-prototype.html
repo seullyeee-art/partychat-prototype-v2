@@ -72,7 +72,7 @@ body{
   /* 블러 배경: 전체 뷰포트 커버 */
   .screen::before{
     content:'';position:fixed;inset:0;z-index:0;
-    background-image:url('./images/char-full.webp');
+    background-image:url('./images/bg-restaurant.png');
     background-size:cover;background-position:center 15%;
     filter:blur(30px) brightness(0.4);
     transform:scale(1.15);
@@ -161,8 +161,8 @@ body{
 }
 .char-img{
   position:absolute;inset:0;z-index:1;
-  background-image:url('./images/char-full.webp');
-  background-size:100% auto;background-position:center 15%;background-repeat:no-repeat;
+  background-image:url('./images/bg-restaurant.png');
+  background-size:cover;background-position:center center;background-repeat:no-repeat;
   background-color:#0c0f15;
 }
 .char-img-overlay{
@@ -1501,7 +1501,7 @@ input[type=number]{-moz-appearance:textfield}
   <!-- Character background -->
   <div class="char-area">
     <div class="char-img"></div>
-    <div class="char-img-overlay" id="charOverlay" style="background-image:url('./images/cutscene-1.webp')"></div>
+    <div class="char-img-overlay" id="charOverlay" style="background-image:none"></div>
   </div>
 
   <!-- Gradients -->
@@ -1513,8 +1513,8 @@ input[type=number]{-moz-appearance:textfield}
     <div class="header-left">
       <button class="icon-btn" onclick="history.back()">‹</button>
       <div class="profile-pill">
-        <div class="avatar"><img src="./images/char-profile.png" alt="셀린" onerror="this.parentElement.textContent='셀'"></div>
-        <span class="char-name">셀린</span>
+        <div class="avatar"><img src="./images/char-iseol.png" alt="이설" onerror="this.parentElement.textContent='이'"></div>
+        <span class="char-name">하루백반</span>
       </div>
     </div>
     <div class="header-right">
@@ -1572,7 +1572,7 @@ input[type=number]{-moz-appearance:textfield}
         <div class="dlg-loading-area" id="dlgLoading" style="display:none">
           <div class="dlg-loading-avatar"><img src="./images/char-profile.png" alt="셀린" onerror="this.parentElement.textContent='셀'"></div>
           <div class="dlg-loading-dots"><span></span><span></span><span></span></div>
-          <div class="dlg-loading-text">셀린이 답변을 생각하고 있어요...</div>
+          <div class="dlg-loading-text" id="dlgLoadingText">답변을 생각하고 있어요...</div>
         </div>
       </div>
       <div class="dlg-skip-row">
@@ -1829,7 +1829,7 @@ const DUMMY_USERS = [
 ];
 
 // 제작자 정보
-const CREATOR = {name:'카하', img:'./images/char-profile.png'};
+const CREATOR = {name:'카하', img:'./images/char-iseol.png'};
 const CREATOR_MSGS = [
   '오늘 업데이트 많이 했어요 ㅋㅋ','셀린이 새 표정 추가할 예정!',
   '버그 제보 고마워요~','다음 캐릭터 투표 곧 올릴게요',
@@ -1902,47 +1902,56 @@ const AI_RESPONSES = [
   '하, 이런 말을 듣게 될 줄이야. 오늘은 좋은 날인가 봐.',
 ];
 
+// ═══ 캐릭터 정의 ═══
+const CHARACTERS = {
+  iseol: { name:'이설', img:'./images/char-iseol.png', profile:'./images/char-iseol.png' },
+  eunjeong: { name:'박은정', img:'./images/char-eunjeong.png', profile:'./images/char-eunjeong.png' }
+};
+let currentChar = CHARACTERS.iseol;
+
 const AI_DIALOGUE_SETS = [
-  [
-    {type:'dialogue', lines:['"잠깐... 지금 뒤에서 뭔가 따라오고 있어."', '"숨 죽여. 움직이지 마."']},
-    {type:'narration', lines:['셀린의 손끝에서 방어 마법진이 펼쳐졌다.', '어둠 속에서 붉은 눈 두 개가 깜빡이더니 사라졌다.']},
-    {type:'dialogue', lines:['"...간 건가? 아니, 이건 시작일 뿐이야."', '"네가 곁에 있어서 다행이야. 솔직히."']},
-  ],
-  [
-    {type:'dialogue', lines:['"이 편지... 봉인이 풀렸어."', '"200년 전 대마법사의 유서라니, 말이 돼?"']},
-    {type:'narration', lines:['양피지 위의 글자들이 저절로 빛나기 시작했다.', '셀린의 얼굴이 점점 창백해졌다.']},
-    {type:'dialogue', lines:['"여기 적혀 있어... \'탑의 최상층에 봉인된 것을 절대 풀지 마라.\'"', '"근데 우리 방금 그 봉인... 풀었잖아?"']},
-  ],
-  [
-    {type:'dialogue', lines:['"야, 저거 봐. 하늘에 금이 갔어."', '"세계가 찢어지고 있다고? 이건 좀 심한데."']},
-    {type:'narration', lines:['하늘의 균열에서 보랏빛 에너지가 쏟아져 내렸다.', '셀린이 두 팔을 벌려 거대한 방어막을 펼쳤다.']},
-    {type:'dialogue', lines:['"3분만 버텨줘... 주문을 완성할 시간이 필요해."', '"네가 믿어줬으니까, 반드시 해낼게."']},
-  ],
-  [
-    {type:'dialogue', lines:['"자, 이번 미션의 보상이야."', '"...열어봐. 기대 이상일 걸?"']},
-    {type:'narration', lines:['상자 안에는 푸른빛이 감도는 목걸이가 들어있었다.', '셀린이 살짝 볼을 붉히며 목걸이를 꺼내 들었다.']},
-    {type:'dialogue', lines:['"이건... 한 쌍이야. 나도 같은 걸 가지고 있거든."', '"바, 바보 같은 생각하지 마! 그냥 통신용이라고!"']},
-  ],
-  [
-    {type:'dialogue', lines:['"조용히 해. 이 벽 뒤에서 소리가 들려."', '"누군가... 울고 있는 건가?"']},
-    {type:'narration', lines:['벽의 마법 문양을 해독하자 비밀 통로가 열렸다.', '그 안에는 수백 년간 갇혀있던 정령이 웅크리고 있었다.']},
-    {type:'dialogue', lines:['"너... 여기서 얼마나 있었던 거야?"', '"괜찮아, 이제 우리가 왔으니까. 꺼내줄게."']},
-  ],
-  [
-    {type:'dialogue', lines:['"잠깐, 이 물약 색이 이상해."', '"보라색이 되면 안 되는데... 누가 손댄 거야?"']},
-    {type:'narration', lines:['물약에서 검은 연기가 피어올랐다.', '셀린이 재빨리 마법으로 연기를 가두었지만 얼굴이 심각해졌다.']},
-    {type:'dialogue', lines:['"누군가 우리를 노리고 있어. 내부에 배신자가 있다는 뜻이야."', '"...네만 믿을 수 있어. 진심으로."']},
-  ],
-  [
-    {type:'dialogue', lines:['"달이 두 개... 이건 꿈이 아니야."', '"다른 세계의 하늘이 보인다는 건, 문이 열렸다는 뜻이야."']},
-    {type:'narration', lines:['두 번째 달에서 은빛 계단이 내려왔다.', '셀린이 망설이다 손을 내밀었다.']},
-    {type:'dialogue', lines:['"같이 올라갈 거지? 혼자는... 좀 무서우니까."', '"돌아올 수 있을지는 모르겠지만, 네가 있으면 괜찮아."']},
-  ],
-  [
-    {type:'dialogue', lines:['"이 고양이가 왜 마법을 쓰는 거야?!"', '"잠깐, 너 혹시 변신한 마법사야?"']},
-    {type:'narration', lines:['검은 고양이가 느릿느릿 변신하더니 하얀 머리의 노마법사가 나타났다.', '"100년만에 봉인이 풀렸구나" 노인이 뼈를 우드득 꺾었다.']},
-    {type:'dialogue', lines:['"와 ㅋㅋ 진짜 반전이네... 할아버지 괜찮아요?"', '"일단 차라도 한잔 드릴게요. 100년이면 목마르셨을 텐데."']},
-  ],
+  // 이설 대사
+  { char:'iseol', lines:[
+    {type:'dialogue', lines:['"오늘 뭐 먹을지 정했어?"', '"나는 사실 아무거나 잘 먹거든."']},
+    {type:'narration', lines:['이설이 후드 주머니에 손을 넣고 슬쩍 웃었다.', '바람이 불어 머리카락이 살짝 흩날렸다.']},
+    {type:'dialogue', lines:['"근데 네가 골라주면... 더 맛있을 것 같아."', '"아, 아무 뜻 없어. 그냥 그렇다고."']},
+  ]},
+  { char:'iseol', lines:[
+    {type:'dialogue', lines:['"이 노래 알아? 요즘 계속 듣고 있어."', '"가사가 좀... 나랑 비슷한 것 같아서."']},
+    {type:'narration', lines:['이설이 이어폰 한쪽을 내밀었다.', '작은 카페 안에 잔잔한 멜로디가 흘렀다.']},
+    {type:'dialogue', lines:['"같이 들어볼래? 한쪽만 줄게."', '"...가까이 와야 들리는데. 어쩔 수 없잖아."']},
+  ]},
+  { char:'iseol', lines:[
+    {type:'dialogue', lines:['"비 온다... 우산 안 가져왔지?"', '"내 거 같이 쓸래? 좀 작긴 한데."']},
+    {type:'narration', lines:['이설이 가방에서 접이식 우산을 꺼냈다.', '둘이 쓰기엔 확실히 좁았다.']},
+    {type:'dialogue', lines:['"어깨 젖을 수도 있어. 괜찮아?"', '"...나는 괜찮으니까. 네가 안 젖으면 돼."']},
+  ]},
+  { char:'iseol', lines:[
+    {type:'dialogue', lines:['"야, 저기 고양이 봐."', '"엄청 뚱뚱하다 ㅋㅋㅋ 귀여워."']},
+    {type:'narration', lines:['이설이 쪼그려 앉아 고양이를 불렀다.', '고양이가 느릿느릿 다가와 이설의 손에 머리를 비볐다.']},
+    {type:'dialogue', lines:['"헐 나한테 왔어 ㅋㅋ 인기 많네 나."', '"너도 만져볼래? 진짜 부드러워."']},
+  ]},
+  // 박은정 대사
+  { char:'eunjeong', lines:[
+    {type:'dialogue', lines:['"어서오세요! 오늘 백반 진짜 잘 됐어요."', '"된장찌개가 특히 자신 있거든요."']},
+    {type:'narration', lines:['박은정이 앞치마를 매만지며 환하게 웃었다.', '식당 안에는 구수한 된장찌개 냄새가 가득했다.']},
+    {type:'dialogue', lines:['"많이 드세요. 리필은 무한이에요."', '"맛있으면 말해주세요. 그게 제일 보람차거든요."']},
+  ]},
+  { char:'eunjeong', lines:[
+    {type:'dialogue', lines:['"오늘 저녁 메뉴 뭘로 할까..."', '"갈비찜? 아니면 김치찜? 고민된다."']},
+    {type:'narration', lines:['박은정이 냉장고를 열며 재료를 확인했다.', '장갑 낀 손으로 재료를 하나씩 꺼내 놓았다.']},
+    {type:'dialogue', lines:['"아 맞다, 네가 좋아하는 거 해줄게."', '"기대해도 돼요. 오늘은 특별히 정성 들일 거니까."']},
+  ]},
+  { char:'eunjeong', lines:[
+    {type:'dialogue', lines:['"손님이 맛있다고 해주면 진짜 힘이 나요."', '"이 일 하길 잘했다 싶은 순간이에요."']},
+    {type:'narration', lines:['박은정이 빈 그릇들을 정리하며 뿌듯하게 미소 지었다.', '저녁노을이 식당 창문으로 따뜻하게 들어왔다.']},
+    {type:'dialogue', lines:['"내일은 뭐 해드릴까요? 리퀘스트 받아요."', '"단골님 취향은 제가 다 기억하고 있거든요 ㅎㅎ"']},
+  ]},
+  { char:'eunjeong', lines:[
+    {type:'dialogue', lines:['"이른 아침부터 왔네요? 부지런하시다."', '"모닝 커피 한잔 드릴까요? 서비스예요."']},
+    {type:'narration', lines:['박은정이 커피를 내리며 창밖을 바라봤다.', '아침 햇살이 하루백반 간판을 비추고 있었다.']},
+    {type:'dialogue', lines:['"이 시간이 제일 좋아요. 조용하고 평화롭고."', '"...같이 이 시간을 보내는 사람이 있다는 것도요."']},
+  ]},
 ];
 
 const TIER_REACTIONS = {
@@ -2599,7 +2608,12 @@ function enterDialogueMode(triggerMsg, winnerUser, winnerAmount) {
   dlgStartedAt = Date.now();
   // AI 모드일 때만 전송 버튼 비활성 (유저 채팅은 가능)
   if (inputMode === 'ai') document.getElementById('sendBtn').disabled = true;
-  dlgData = pick(AI_DIALOGUE_SETS);
+  const dlgSet = pick(AI_DIALOGUE_SETS);
+  currentChar = CHARACTERS[dlgSet.char];
+  dlgData = dlgSet.lines;
+  // 캐릭터 이미지 전환
+  document.getElementById('charOverlay').style.backgroundImage = 'url(' + currentChar.img + ')';
+  document.getElementById('charOverlay').classList.add('show');
   document.getElementById('screen').classList.add('dlg-gradient');
 
   const chatFeed = document.getElementById('chatFeed');
@@ -2677,7 +2691,7 @@ async function runDialogueSequence(triggerMsg, userName, userAmount) {
     if (isNarration) {
       showDlgVN('', '', null, 'is-narration', turn.lines);
     } else {
-      showDlgVN('셀린', 'is-char', null, 'is-dialogue', turn.lines);
+      showDlgVN(currentChar.name, 'is-char', null, 'is-dialogue', turn.lines);
     }
 
     await waitForTypingDone();
@@ -3291,12 +3305,13 @@ function init() {
   }
 
   // 초기 상태: 대사 모드로 시작 (타이핑 애니메이션)
-  const initDlg = pick(AI_DIALOGUE_SETS);
-  const lastSegment = initDlg[initDlg.length - 1];
+  const initDlgSet = pick(AI_DIALOGUE_SETS);
+  currentChar = CHARACTERS[initDlgSet.char];
+  const lastSegment = initDlgSet.lines[initDlgSet.lines.length - 1];
   const dlgText = document.getElementById('dlgText');
   const dlgNameText = document.getElementById('dlgNameText');
   dlgText.className = 'dlg-text is-' + lastSegment.type;
-  dlgNameText.textContent = '셀린';
+  dlgNameText.textContent = currentChar.name;
   dlgNameText.className = 'dlg-name-text is-char';
 
   // 타이핑 애니메이션
