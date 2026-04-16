@@ -167,7 +167,7 @@ body{
 }
 .char-img-overlay{
   position:absolute;inset:0;z-index:2;
-  background-size:cover;background-position:center 30%;background-repeat:no-repeat;
+  background-size:contain;background-position:center bottom;background-repeat:no-repeat;
   opacity:0;transition:opacity 1.2s ease-in-out;
   pointer-events:none;
 }
@@ -1501,7 +1501,7 @@ input[type=number]{-moz-appearance:textfield}
   <!-- Character background -->
   <div class="char-area">
     <div class="char-img"></div>
-    <div class="char-img-overlay" id="charOverlay" style="background-image:none"></div>
+    <div class="char-img-overlay show" id="charOverlay" style="background-image:url('./images/char-iseol.png')"></div>
   </div>
 
   <!-- Gradients -->
