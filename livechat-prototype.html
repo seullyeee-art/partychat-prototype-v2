@@ -1570,7 +1570,7 @@ input[type=number]{-moz-appearance:textfield}
         <div class="dlg-text is-dialogue" id="dlgText"></div>
         <!-- Loading (shown between user msg and AI response) -->
         <div class="dlg-loading-area" id="dlgLoading" style="display:none">
-          <div class="dlg-loading-avatar"><img src="./images/char-profile.png" alt="이설" onerror="this.parentElement.textContent='셀'"></div>
+          <div class="dlg-loading-avatar"><img id="dlgLoadingImg" src="./images/char-profile.png" alt="이설" onerror="this.parentElement.textContent='이'"></div>
           <div class="dlg-loading-dots"><span></span><span></span><span></span></div>
           <div class="dlg-loading-text" id="dlgLoadingText">답변을 생각하고 있어요...</div>
         </div>
@@ -2614,6 +2614,9 @@ function enterDialogueMode(triggerMsg, winnerUser, winnerAmount) {
   // 캐릭터 이미지 전환
   document.getElementById('charOverlay').style.backgroundImage = 'url(' + currentChar.img + ')';
   document.getElementById('charOverlay').classList.add('show');
+  // 로딩 아바타도 현재 캐릭터로
+  const loadingAvatar = document.querySelector('.dlg-loading-avatar img');
+  if (loadingAvatar) loadingAvatar.src = currentChar.profile;
   document.getElementById('screen').classList.add('dlg-gradient');
 
   const chatFeed = document.getElementById('chatFeed');
