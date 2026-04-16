@@ -32,12 +32,16 @@ body::before{
   filter:blur(20px) brightness(0.4);
   transform:scale(1.15);
 }
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:rgba(0,0,0,0.55);
+}
 .container{
   max-width:430px;width:100%;
   min-height:100vh;
   display:flex;flex-direction:column;align-items:center;
   padding:60px 20px 40px;
-  background:rgba(0,0,0,0.5);
+  background:none;
   position:relative;z-index:1;
 }
 .profile{
@@ -82,13 +86,11 @@ body::before{
 }
 .rank-num{width:20px;font-size:13px;font-weight:700;color:var(--label-alternative);text-align:center;display:flex;align-items:center;justify-content:center}
 .rank-medal{width:20px;height:20px;object-fit:contain}
-.rank-item.rank-1st{background:rgba(255,255,255,0.04)}
-.rank-item.rank-2nd{background:rgba(255,255,255,0.03)}
-.rank-item.rank-3rd{background:rgba(255,255,255,0.02)}
+.rank-item.rank-1st,.rank-item.rank-2nd,.rank-item.rank-3rd{background:none}
 .rank-avatar{display:none}
 .rank-name{flex:1;font-size:13px;font-weight:600;color:var(--label-normal)}
 .rank-amount{font-size:13px;font-weight:700;color:var(--accent-gold)}
-.rank-item.me{border:1px solid rgba(19,187,143,0.3);background:rgba(19,187,143,0.06)}
+.rank-item.me{border:none;background:none}
 .rank-item.me .rank-num{color:var(--primary-normal)}
 .me-badge{
   display:inline-block;padding:1px 5px;border-radius:4px;
