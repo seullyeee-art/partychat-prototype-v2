@@ -1975,6 +1975,13 @@ function loadVoices() {
 if ('speechSynthesis' in window) {
   loadVoices();
   speechSynthesis.addEventListener('voiceschanged', loadVoices);
+  // iOS: 첫 터치에서 TTS unlock
+  document.addEventListener('touchstart', function unlockTTS() {
+    const u = new SpeechSynthesisUtterance('');
+    u.volume = 0;
+    speechSynthesis.speak(u);
+    document.removeEventListener('touchstart', unlockTTS);
+  }, {once: true});
 }
 function speakTTS(text) {
   if (!('speechSynthesis' in window) || soundMuted) return;
@@ -3031,9 +3038,7 @@ function showDonationAlert(userName, amount, message) {
   SFX_DONATE.currentTime = 0;
   SFX_DONATE.play().catch(()=>{});
   // 후원 메시지 TTS 읽기
-  if (message) {
-    setTimeout(() => speakTTS(message), 500);
-  }
+  if (message) speakTTS(message);
   // 50미르 이상: 팝업 알림 + GIF
   alertQueue.push({userName, amount, message});
   if (!alertShowing) processAlertQueue();
