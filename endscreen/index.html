@@ -158,12 +158,48 @@ body::after{
   color:var(--label-alternative);
 }
 
+/* 상단 네비게이션 */
+.nav-bar{
+  position:fixed;top:0;left:0;right:0;z-index:10;
+  max-width:430px;margin:0 auto;
+  display:flex;align-items:center;
+  padding:12px 16px;padding-top:max(12px, env(safe-area-inset-top));
+}
+.nav-back{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(0,0,0,0.3);border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--label-strong);font-size:18px;
+  transition:background 0.2s;
+}
+.nav-back:active{background:rgba(0,0,0,0.5)}
+
+/* 하단 버튼 */
+.bottom-action{
+  width:100%;max-width:390px;
+  padding:0 20px max(20px, env(safe-area-inset-bottom));
+  margin-top:auto;
+}
+.home-btn{
+  width:100%;height:48px;border-radius:12px;border:none;
+  background:var(--primary-normal);
+  color:#fff;font-size:15px;font-weight:700;
+  font-family:inherit;cursor:pointer;
+  transition:background 0.2s;
+}
+.home-btn:active{background:var(--primary-heavy, #10a782)}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important}
 }
 </style>
 </head>
 <body>
+<div class="nav-bar">
+  <button class="nav-back" onclick="history.back()">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
 <canvas class="sparkle-canvas" id="sparkleCanvas"></canvas>
 <div class="container">
   <div class="profile"><img src="./images/char-profile.png" alt=""></div>
@@ -223,6 +259,10 @@ body::after{
       <span class="rank-name">붉은달</span>
       <span class="rank-amount">💎 150</span>
     </div>
+  </div>
+
+  <div class="bottom-action">
+    <button class="home-btn" onclick="location.href='/'">홈으로 나가기</button>
   </div>
 </div>
 
