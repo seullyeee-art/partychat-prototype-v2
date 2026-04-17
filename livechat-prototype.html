@@ -1975,12 +1975,13 @@ function loadVoices() {
 if ('speechSynthesis' in window) {
   loadVoices();
   speechSynthesis.addEventListener('voiceschanged', loadVoices);
-  // iOS: 첫 터치에서 TTS unlock
-  document.addEventListener('touchstart', function unlockTTS() {
-    const u = new SpeechSynthesisUtterance('');
-    u.volume = 0;
+  // 첫 인터랙션에서 TTS unlock (Chrome + iOS)
+  document.addEventListener('click', function unlockTTS() {
+    const u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0.01;
+    u.lang = 'ko-KR';
     speechSynthesis.speak(u);
-    document.removeEventListener('touchstart', unlockTTS);
+    document.removeEventListener('click', unlockTTS);
   }, {once: true});
 }
 function speakTTS(text) {
