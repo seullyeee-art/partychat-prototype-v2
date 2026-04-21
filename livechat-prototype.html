@@ -163,7 +163,7 @@ body{
   transition:background 0.3s ease-out, box-shadow 0.3s ease-out, opacity 0.15s ease-out;
 }
 .chat-timer-banner.warn .timer-segments .seg:not(.empty){
-  background:#facc15;
+  background:#fb923c;
   box-shadow:0 0 6px rgba(250,204,21,0.6), inset 0 0 4px rgba(255,255,255,0.3);
 }
 .chat-timer-banner .timer-segments .seg.empty{
@@ -854,12 +854,10 @@ body{
 }
 .dlg-timer-pill:empty{opacity:0}
 .dlg-timer-pill .dlg-timer-num{color:var(--primary-normal);font-weight:800;margin-left:3px}
-.dlg-skip-row.warn .dlg-timer-pill{background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.45)}
-.dlg-skip-row.warn .dlg-timer-pill .dlg-timer-num{color:#facc15}
+.dlg-skip-row.warn .dlg-timer-pill{background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.5)}
+.dlg-skip-row.warn .dlg-timer-pill .dlg-timer-num{color:#fb923c}
 .dlg-skip-row.danger .dlg-timer-pill{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.55)}
 .dlg-skip-row.danger .dlg-timer-pill .dlg-timer-num{color:#ef4444;animation:timerPulse 0.7s ease-in-out infinite}
-.dlg-skip-row.warn .dlg-progress-num{color:#facc15}
-.dlg-skip-row.danger .dlg-progress-num{color:#ef4444;animation:timerPulse 0.7s ease-in-out infinite}
 @keyframes timerPulse{0%,100%{opacity:1}50%{opacity:0.55}}
 .dlg-skip-btn{
   padding:7px 14px;border-radius:16px;
@@ -908,7 +906,7 @@ body{
   transition:opacity 0.2s;
 }
 .input-bar .timer-pill:empty{opacity:0}
-.input-bar.timer-ambient.warn .timer-pill{color:#facc15;border-color:rgba(250,204,21,0.5)}
+.input-bar.timer-ambient.warn .timer-pill{color:#fb923c;border-color:rgba(250,204,21,0.5)}
 .input-bar.timer-ambient.danger .timer-pill{color:#ef4444;border-color:rgba(239,68,68,0.5)}
 .chat-timer-banner.hidden{display:none}
 
@@ -3135,7 +3133,7 @@ async function runDialogueSequence(triggerMsg, userName, userAmount) {
     const turn = dlgData[i];
     const isNarration = turn.type === 'narration';
 
-    document.getElementById('dlgProgress').innerHTML = '<span class="dlg-progress-label">진행</span> <span class="dlg-progress-num">' + (i + 1) + ' / ' + dlgData.length + '</span>';
+    document.getElementById('dlgProgress').innerHTML = '<span class="dlg-progress-label">진행</span> <span class="dlg-progress-num" style="color:#fff">' + (i + 1) + ' / ' + dlgData.length + '</span>';
 
     if (isNarration) {
       showDlgVN('', '', null, 'is-narration', turn.lines);
