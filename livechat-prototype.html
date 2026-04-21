@@ -187,7 +187,7 @@ body{
 .chat-timer-banner.streaming .timer-segments{display:none}
 .chat-timer-banner.streaming .header-timer-val{display:none}
 .chat-timer-banner.streaming{justify-content:center;text-align:center}
-.chat-timer-banner.streaming .header-timer-label{color:var(--primary-normal);font-weight:700;text-align:center;width:100%}
+.chat-timer-banner.streaming .header-timer-label{color:var(--primary-normal);font-weight:500;text-align:center;width:100%}
 .chat-timer-banner.danger .header-timer-label{color:var(--status-negative);opacity:0.8}
 .chat-timer-banner.danger .header-timer-val{color:var(--status-negative);animation:timerTextPulse 0.6s ease-in-out infinite}
 .chat-timer-banner.danger .timer-segments .seg:not(.empty){
@@ -792,6 +792,8 @@ body{
   .header .icon-btn{width:40px;height:40px}
   .header .icon-btn svg{width:24px;height:24px}
   .header .icon-btn img{width:22px;height:22px}
+  .chat-timer-banner.streaming .header-timer-label{font-size:14px}
+  .mode-tabs .mt-opt{font-size:15px;width:38px}
 }
 .dlg-text.is-user{color:#e5dba0}
 .dlg-text .ln{margin-bottom:2px}
@@ -1670,7 +1672,7 @@ input[type=number]{-moz-appearance:textfield}
 .da-donor{
   font-size:16px;color:var(--label-strong);font-weight:700;
   margin-bottom:6px;text-align:center;letter-spacing:0.01em;
-  text-shadow:0 2px 8px rgba(0,0,0,0.9);
+  text-shadow:0 1px 3px rgba(0,0,0,0.85), 0 0 6px rgba(0,0,0,0.55);
 }
 .da-donor .da-name{color:var(--primary-normal);font-weight:800}
 .da-donor .da-mir-icon{vertical-align:middle;margin:0 2px}
@@ -1679,7 +1681,7 @@ input[type=number]{-moz-appearance:textfield}
 .da-message{
   font-size:15px;color:var(--label-strong);text-align:center;
   line-height:1.5;font-weight:600;
-  text-shadow:0 2px 8px rgba(0,0,0,0.9);
+  text-shadow:0 1px 3px rgba(0,0,0,0.85), 0 0 6px rgba(0,0,0,0.55);
 }
 
 /* ═══ TOAST ═══ */
@@ -1899,9 +1901,6 @@ input[type=number]{-moz-appearance:textfield}
 
     <!-- Chat feed + Input 통합 (바텀시트) -->
     <div class="chat-feed-outer compact" id="chatFeedOuter">
-      <button class="chat-toggle-chevron" id="chatToggleChevron" onclick="toggleGeneralChat()" aria-label="채팅 열기/닫기">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 10L8 6L12 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
       <div class="chat-sheet-handle" id="chatSheetHandle" onclick="toggleGeneralChat()"></div>
       <div class="chat-rank-bar" id="chatRankBar" onclick="openRanking()"></div>
       <div class="chat-feed-wrap scrollable" id="chatFeedWrap" onclick="handleChatFeedClick(event)">
@@ -2590,6 +2589,9 @@ function setInputMode(mode) {
     b.classList.toggle('active', active);
     b.setAttribute('aria-selected', active ? 'true' : 'false');
   });
+  // 유저챗이면 패널 자동 열기, AI챗이면 자동 닫기
+  if (mode === 'free') openGeneralChat();
+  else closeGeneralChat();
   updateCharCount();
   updateSendBtn();
 }
