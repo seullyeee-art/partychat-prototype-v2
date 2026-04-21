@@ -15,6 +15,7 @@
 6. [후원 시스템](#6-후원-시스템)
 7. [대사 모드](#7-대사-모드)
 8. [기술 스택 & 파일 구조](#8-기술-스택--파일-구조)
+9. [종료 화면 (endscreen)](#9-종료-화면-endscreen)
 
 ---
 
@@ -562,3 +563,53 @@ background-image: char-full.webp
 filter: blur(30px) brightness(0.4)
 transform: scale(1.15)
 ```
+
+---
+
+## 9. 종료 화면 (endscreen)
+
+> 파일: `endscreen/index.html`
+> 진입: 라이브 종료 시 자동 이동 / 나가기 버튼
+> 레이아웃: max-width 430px, 스파클 파티클 + 블러 배경
+
+### 구성
+1. **상단 네비게이션** — `history.back()` 버튼
+2. **프로필 + 타이틀** — "라이브가 종료되었습니다" + 감사 메시지 (mojito pulse)
+3. **후원 랭킹** — 1/2/3등 골드/실버/브론즈 shimmer, 4~10등 기본 스타일
+   - 섹션 타이틀 왕관 아이콘: `crown.svg` (20×20, 라이브챗 공통)
+   - 메달 아이콘: `medal-1.svg` / `medal-2.svg` / `medal-3.svg` (라이브챗 공통)
+   - 미르 아이콘: `mir.png` (14×14, 1등만 16×16)
+4. **하단 액션 버튼 (두 버튼 레이아웃)**
+
+### 하단 액션 버튼 스펙
+| 버튼 | 역할 | 스타일 | 이동 |
+|------|------|--------|------|
+| **홈으로 가기** (secondary) | 라이브 종료 후 탈출 | `fill-normal` 회색 필드, `label-normal` 텍스트 | `/` |
+| **이 콘텐츠 채팅** (primary) | 같은 콘텐츠 1:1 채팅으로 유도 | `primary-normal` 필드, 백색 텍스트, shine 애니메이션 (3s 주기) | `../chat/` (mirai-chat 배포 경로로 교체) |
+
+**레이아웃 — 50:50 균등 분할**
+```css
+.bottom-action{display:flex; gap:8px; padding:0 20px; max-width:390px}
+.home-btn{flex:1}   /* 5 */
+.chat-btn{flex:1}   /* 5 */
+```
+
+**버튼 공통**
+```
+height: 48px
+radius: 12px
+font: 15px / weight 700
+transition: background 0.2s, border-color 0.2s
+```
+
+**chat-btn shine 애니메이션**
+```
+::after 레이어로 45° 화이트 그라디언트를 60% 폭으로 좌→우 이동
+duration: 3s, delay: 1.5s, infinite
+opacity 최대 0.25 (과하지 않게)
+```
+
+### 인터랙션
+- 홈 버튼 active → `fill-strong` 배경
+- 채팅 버튼 active → `primary-heavy`
+- `prefers-reduced-motion:reduce` → shine 및 shimmer 애니메이션 비활성
