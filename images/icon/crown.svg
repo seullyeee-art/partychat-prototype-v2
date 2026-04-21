@@ -1,0 +1,34 @@
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="crown-glow" cx="9" cy="10" r="9" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFE485" stop-opacity="0.5"/>
+<stop offset="1" stop-color="#FBD635" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="crown-body-grad" x1="9" y1="4" x2="9" y2="15" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFE785"/>
+<stop offset="0.5" stop-color="#FBD635"/>
+<stop offset="1" stop-color="#D48800"/>
+</linearGradient>
+<linearGradient id="crown-base-grad" x1="9" y1="14" x2="9" y2="16.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FBD635"/>
+<stop offset="1" stop-color="#B47000"/>
+</linearGradient>
+<radialGradient id="crown-gem" cx="6" cy="5" r="3" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFE785"/>
+<stop offset="0.5" stop-color="#FBD635"/>
+<stop offset="1" stop-color="#B47000"/>
+</radialGradient>
+</defs>
+<circle cx="9" cy="10" r="9" fill="url(#crown-glow)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.0831 8.57627L9.65764 4.84502C9.58635 4.73529 9.48877 4.64511 9.37377 4.58268C9.25877 4.52025 9.12999 4.48755 8.99914 4.48755C8.86828 4.48755 8.7395 4.52025 8.6245 4.58268C8.5095 4.64511 8.41192 4.73529 8.34064 4.84502L5.91514 8.57627L3.02764 7.08377C2.89593 7.01572 2.74767 6.98631 2.59996 6.99893C2.45225 7.01155 2.31112 7.06568 2.19287 7.15508C2.07461 7.24448 1.98405 7.3655 1.93163 7.50417C1.87922 7.64283 1.86708 7.7935 1.89664 7.93877L3.14314 14.094H14.8551L16.1016 7.93802C16.131 7.7928 16.1187 7.64224 16.0663 7.5037C16.0138 7.36515 15.9232 7.24426 15.805 7.15497C15.6867 7.06567 15.5457 7.01161 15.3981 6.99901C15.2505 6.98642 15.1023 7.0158 14.9706 7.08377L12.0831 8.57627Z" fill="url(#crown-body-grad)"/>
+<path d="M4 9L4.5 13" stroke="#FFF5B8" stroke-width="0.6" opacity="0.6" stroke-linecap="round"/>
+<path d="M9 6L9 11" stroke="#FFF5B8" stroke-width="0.6" opacity="0.6" stroke-linecap="round"/>
+<path d="M14 9L13.5 13" stroke="#FFF5B8" stroke-width="0.6" opacity="0.6" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.1053 16.344H3.89258C3.69367 16.344 3.5029 16.265 3.36225 16.1243C3.2216 15.9837 3.14258 15.7929 3.14258 15.594V14.094H14.8553V15.594C14.8553 15.7929 14.7763 15.9837 14.6357 16.1243C14.495 16.265 14.3042 16.344 14.1053 16.344Z" fill="url(#crown-base-grad)"/>
+<circle cx="9" cy="2.68" r="1.18" fill="url(#crown-gem)"/>
+<circle cx="8.7" cy="2.4" r="0.35" fill="#FFFDE0" opacity="0.8"/>
+<circle cx="16.82" cy="5.67" r="1.18" fill="url(#crown-gem)"/>
+<circle cx="16.52" cy="5.39" r="0.35" fill="#FFFDE0" opacity="0.8"/>
+<circle cx="1.18" cy="5.67" r="1.18" fill="url(#crown-gem)"/>
+<circle cx="0.88" cy="5.39" r="0.35" fill="#FFFDE0" opacity="0.8"/>
+</svg>
