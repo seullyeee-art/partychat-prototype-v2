@@ -188,6 +188,19 @@ body{
   pointer-events:none;
 }
 .char-img-overlay.show{opacity:1}
+.char-img.waiting-bg{
+  background-size:cover;
+  background-position:center center;
+  filter:blur(22px) saturate(1.05) brightness(0.85);
+  transform:scale(1.2);
+  transform-origin:center center;
+}
+.char-img-overlay.waiting-front{
+  background-size:auto 100%;
+  background-position:center center;
+  filter:none;
+  transform:none;
+}
 @media (min-width:431px){
   .char-img{
     background-size:cover;background-position:center center;
@@ -1277,7 +1290,7 @@ input[type=number]{-moz-appearance:textfield}
       </button>
       <div class="profile-pill">
         <div class="avatar"><img src="./images/char-profile.png" alt="이설" onerror="this.parentElement.textContent='이'"></div>
-        <span class="char-name">채무 대신 연애로 받겠습니다</span>
+        <span class="char-name">[신입]첫방송</span>
       </div>
     </div>
     <div class="header-right">
@@ -1915,6 +1928,14 @@ function addChatMessage(user, img, text, amount, isMe, msgType) {
 
 function generateDummyMessage() {
   // chatPaused 중에도 채팅 계속 올라옴
+  // 대기방: 유저 무료 채팅만
+  if (waitingRoom) {
+    const user = pick(DUMMY_USERS);
+    const text = pick(DUMMY_FREE_MSGS);
+    addChatMessage(user.name, user.img, text, 0, false, 'free');
+    return;
+  }
+
   const r = Math.random();
 
   if (r < 0.05) {
@@ -1983,7 +2004,7 @@ function updateSendBtn() {
   const input = document.getElementById('inputField');
   const btn = document.getElementById('sendBtn');
   const hasText = input.value.trim().length > 0;
-  const locked = (inputMode === 'ai' && (chatPaused || dlgMode));
+  const locked = (inputMode === 'ai' && (chatPaused || dlgMode || waitingRoom));
   btn.classList.toggle('locked', locked);
   // 잠금 상태에선 disabled 해제 — 클릭 이벤트 받아 토스트 띄워야 함
   btn.disabled = (inputMode === 'ai' && !hasText && !locked);
@@ -2054,7 +2075,11 @@ function sendMyMessage() {
   const input = document.getElementById('inputField');
   const text = input.value.trim();
 
-  // AI 모드일 때만 슬롯/대사 중 전송 차단 (유저 채팅은 항상 가능) — 빈 텍스트여도 토스트
+  // AI 모드 전송 차단
+  if (inputMode === 'ai' && waitingRoom) {
+    showToastTop('🎬 방송 시작 전에는 캐릭터와 대화할 수 없어요');
+    return;
+  }
   if (inputMode === 'ai' && (chatPaused || dlgMode)) {
     showToastTop('캐릭터가 응답중에는 전송되지 않습니다');
     return;
@@ -2294,6 +2319,7 @@ var dlgStartedAt = 0;   // 대사 시작 시각
 var dlgTotalDuration = 0; // 대사 전체 예상 소요 시간(ms)
 
 function enterDialogueMode(triggerMsg, winnerUser, winnerAmount) {
+  if (waitingRoom) return;
   dlgMode = true;
   dlgAborted = false;
   dlgStartedAt = Date.now();
@@ -2716,6 +2742,70 @@ function openHistory() {
   showToastTop('📜 방송 로그는 준비 중이에요');
 }
 
+// ═══ 대기방 모드 (프로토타입: 항상 대기 상태로 시작, 수동 exitWaitingRoom() 호출) ═══
+let waitingRoom = true;
+const STANDBY_IMG = './images/standby.png';
+const CHAR_IMG = './images/char-iseol.png';
+const BG_IMG = './images/bg-restaurant.png';
+
+function setCharOverlayImage(src) {
+  const el = document.getElementById('charOverlay');
+  if (el) el.style.backgroundImage = "url('" + src + "')";
+}
+
+function setCharImgBackground(src) {
+  const el = document.querySelector('.char-img');
+  if (el) el.style.backgroundImage = "url('" + src + "')";
+}
+
+function setDlgAreaHidden(hidden) {
+  const el = document.getElementById('dlgArea');
+  if (el) el.style.display = hidden ? 'none' : '';
+}
+
+function setWaitingBg(on) {
+  const bg = document.querySelector('.char-img');
+  const ov = document.getElementById('charOverlay');
+  if (bg) bg.classList.toggle('waiting-bg', !!on);
+  if (ov) ov.classList.toggle('waiting-front', !!on);
+  if (on) {
+    setCharImgBackground(STANDBY_IMG);
+    setCharOverlayImage(STANDBY_IMG);
+    if (ov) ov.style.opacity = '';
+  } else {
+    setCharImgBackground(BG_IMG);
+    if (ov) ov.style.opacity = '';
+  }
+}
+
+function enterWaitingRoom() {
+  waitingRoom = true;
+  setWaitingBg(true);
+  setDlgAreaHidden(true);
+  clearInterval(countdownTimer);
+  if (dlgMode) {
+    try { dlgMode = false; } catch(e) {}
+    const dlgLoading = document.getElementById('dlgLoading');
+    if (dlgLoading) dlgLoading.style.display = 'none';
+  }
+  const timerVal = document.getElementById('headerTimerVal');
+  if (timerVal) timerVal.textContent = '';
+  updateSendBtn();
+}
+
+function exitWaitingRoom() {
+  if (!waitingRoom) return;
+  waitingRoom = false;
+  setCharOverlayImage(CHAR_IMG);
+  setWaitingBg(false);
+  setDlgAreaHidden(false);
+  showToastTop('🎬 방송이 시작됩니다!');
+  setTimeout(() => {
+    if (typeof enterDialogueMode === 'function') enterDialogueMode(null, null, 0);
+  }, 600);
+}
+
+
 function closeAllSheets() {
   // 후원 메시지가 있으면 메인 인풋으로 옮기기
   const donateMsg = document.getElementById('donateMsgInput');
@@ -2984,8 +3074,15 @@ function init() {
   // 봉투 그리드 선구성
   renderEnvelopeGrid();
 
-  // 초기 상태: 캐릭터 대사 시퀀스부터 바로 재생 (유저 메시지 스킵)
-  setTimeout(() => enterDialogueMode(null, null, 0), 400);
+  // 대기방이면 블러 배경 + 세로 100% 선명 이미지 + 대사 영역 숨김
+  if (waitingRoom) {
+    setWaitingBg(true);
+    setDlgAreaHidden(true);
+    updateSendBtn();
+  } else {
+    // 방송 중: 캐릭터 대사 시퀀스부터 바로 재생
+    setTimeout(() => enterDialogueMode(null, null, 0), 400);
+  }
 }
 
 // Enter key to send
